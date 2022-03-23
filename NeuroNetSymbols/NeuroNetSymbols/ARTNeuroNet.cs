@@ -24,18 +24,18 @@ namespace NeuroNetSymbols
         //так проще добавлять новые нейроны
         //от распознающего к сравнивающему
         //[номер распознающего][номер сравнивающего]
-        List<List<int>> recognizeToCompare = new List<List<int>>();
+        public List<List<int>> recognizeToCompare = new List<List<int>>();
 
         //[номер сравнивающего][номер распознающего]
         //от сравнивающего к распознающему
-        List<List<double>> compareToRecognize = new List<List<double>>();
+        public List<List<double>> compareToRecognize = new List<List<double>>();
 
         //начальное количество нейронов
         //в сравнивающем слое - по количеству входов
-        int compareNeuronsCount;
+        public int compareNeuronsCount;
         //в выходном слое по количеству распознанных образцов
         //начнем с одного нейрона
-        int recognizeNeuronCount;
+        public int recognizeNeuronCount;
 
       
         //добавить новый обученный нейрон
@@ -59,11 +59,7 @@ namespace NeuroNetSymbols
             //инициализация весов сравнивающего
             for (int i = 0; i < compareNeuronsCount; i++)
             {
-                compareToRecognize.Add(new List<double>());
-                for (int j = 0; j < recognizeNeuronCount; j++)
-                {
-                    compareToRecognize[i].Add((recognizeToCompare[0][i] * L) / (L - 1 + inputSum));
-                }
+                compareToRecognize[i].Add((recognizeToCompare[recognizeNeuronCount - 1][i] * L) / (L - 1 + inputSum));
             }
         }
 
@@ -76,11 +72,9 @@ namespace NeuroNetSymbols
             //если нейрон один
             if(recognizeNeuronCount == 1)
             {
-                // обучить его 
-                
-                // добавить новый нейрон
+                 // добавить новый обученный нейрон
                 AddNeuron(symbol);
-                return 0;//Возвращаю номер нулевого нейрона
+                return recognizeNeuronCount-1;//Возвращаю номер добавленного нейрона
             }
             else
             {
@@ -99,7 +93,7 @@ namespace NeuroNetSymbols
                     for (int j = 0; j < compareNeuronsCount; j++)
                     {
                         //GetResult() - вычисляет значение нейрона по правилу 2 из 3
-                        recognizeLayer[i].input += compareLayer[i].GetResult() * compareToRecognize[j][i];
+                        recognizeLayer[i].input += compareLayer[j].GetResult() * compareToRecognize[j][i];
                     }
                 }
                 //ищем максимум из всех выходов распознающего слоя
@@ -155,7 +149,7 @@ namespace NeuroNetSymbols
                     //если не распознали  добавить новый обученный нейрон
                     AddNeuron(symbol);
                     //и вернуть его номер
-                    return recognizeNeuronCount;
+                    return recognizeNeuronCount-1;
                 }
             }
         }
@@ -168,24 +162,16 @@ namespace NeuroNetSymbols
             //изменить количество нейронов
             compareNeuronsCount = inputSize;
 
-            //инициализация весов распознающего
-            //предыдущие данные, если они были, исчезнут
-            recognizeToCompare.Add(new List<int>());
-            for (int i = 0; i < compareNeuronsCount; i++)
-            {
-                recognizeToCompare[0].Add(1);
-            }
-
-            //инициализация весов сравнивающего
-            for (int i = 0; i < compareNeuronsCount; i++)
-            {
-                compareToRecognize.Add(new List<double>());
-                compareToRecognize[i].Add(L / (L - 1 + compareNeuronsCount));
-            }
+          
             //создаю сами нейроны сравнивающего слоя
             for (int i = 0; i < compareNeuronsCount; i++)
             {
                 compareLayer.Add(new CompareNeuron());
+            }
+            //инициализация весов сравнивающего
+            for (int i = 0; i < compareNeuronsCount; i++)
+            {
+                compareToRecognize.Add(new List<double>());
             }
             int[] neuron = new int[compareNeuronsCount];
             for (int i = 0; i < compareNeuronsCount; i++)

@@ -102,6 +102,31 @@ namespace NeuroNetSymbols
         {
             //дать сети образец, получить результат, вывести результат в label4
             label4.Text = art.AddSample(SymbolToInput(symbol)).ToString();
+            double[] inputOfActiveNeuron = new double[SymbolLength * SymbolHeight];
+            int[] outputOfActiveNeuron = new int[SymbolLength * SymbolHeight];
+
+            dataGridView1.Rows.Clear();
+            for (int i = 0; i < art.recognizeNeuronCount; i++)
+            {
+                //массив для показа в таблице одной строки
+                string[] strings = new string[13];
+                strings[0] = i.ToString() + " in";
+                for (int j = 0; j < art.compareNeuronsCount; j++)
+                {
+                    strings[j + 1] = art.compareToRecognize[j][i].ToString();
+                }
+                dataGridView1.Rows.Add(strings);
+
+                strings = new string[13];
+                strings[0] =  "out";
+                for (int j = 0; j < art.compareNeuronsCount; j++)
+                {
+                    strings[j + 1] = art.recognizeToCompare[i][j].ToString();
+                }
+                dataGridView1.Rows.Add(strings);
+            }
+            
+
         }
 
         private void button5_Click_1(object sender, EventArgs e)
@@ -109,6 +134,19 @@ namespace NeuroNetSymbols
             symbol = DigitGenerator.generateSymbol4();
             GetResult();
             pictureBox1.Invalidate();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            //Уменьшаю ширину колонок
+            //кодом проще, чем в ручную
+            for(int i = 0;i<dataGridView1.Columns.Count;i++)
+                dataGridView1.Columns[i].Width = 40;
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

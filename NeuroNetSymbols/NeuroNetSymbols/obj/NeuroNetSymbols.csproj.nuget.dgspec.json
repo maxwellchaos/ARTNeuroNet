@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\user\\source\\repos\\NeuroNetSymbols\\NeuroNetSymbols\\NeuroNetSymbols.csproj": {}
+    "C:\\Users\\user\\Downloads\\ARTNeuroNet-main\\ARTNeuroNet-main\\NeuroNetSymbols\\NeuroNetSymbols\\NeuroNetSymbols.csproj": {}
   },
   "projects": {
-    "C:\\Users\\user\\source\\repos\\NeuroNetSymbols\\NeuroNetSymbols\\NeuroNetSymbols.csproj": {
+    "C:\\Users\\user\\Downloads\\ARTNeuroNet-main\\ARTNeuroNet-main\\NeuroNetSymbols\\NeuroNetSymbols\\NeuroNetSymbols.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\user\\source\\repos\\NeuroNetSymbols\\NeuroNetSymbols\\NeuroNetSymbols.csproj",
+        "projectUniqueName": "C:\\Users\\user\\Downloads\\ARTNeuroNet-main\\ARTNeuroNet-main\\NeuroNetSymbols\\NeuroNetSymbols\\NeuroNetSymbols.csproj",
         "projectName": "NeuroNetSymbols",
-        "projectPath": "C:\\Users\\user\\source\\repos\\NeuroNetSymbols\\NeuroNetSymbols\\NeuroNetSymbols.csproj",
+        "projectPath": "C:\\Users\\user\\Downloads\\ARTNeuroNet-main\\ARTNeuroNet-main\\NeuroNetSymbols\\NeuroNetSymbols\\NeuroNetSymbols.csproj",
         "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\user\\source\\repos\\NeuroNetSymbols\\NeuroNetSymbols\\obj\\",
+        "outputPath": "C:\\Users\\user\\Downloads\\ARTNeuroNet-main\\ARTNeuroNet-main\\NeuroNetSymbols\\NeuroNetSymbols\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
