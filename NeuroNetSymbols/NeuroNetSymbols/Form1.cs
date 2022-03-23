@@ -12,28 +12,49 @@ namespace NeuroNetSymbols
 {
     public partial class Form1 : Form
     {
-        NeuroNet net = new NeuroNet();
-        int[,] Symbol = new int[8, 6];
+        //это параметры образца. Если их поменять - будет образец другого размера
+        //константами сделаны чтобы можно было их указать как размер массива
+        //длина образца
+        const int SymbolLength = 3;
+        //высота образца
+        const int SymbolHeight = 4;
+        
+        //сама нейросеть
+        ARTNeuroNet art = new ARTNeuroNet();
 
-        double[] testErr = new double[500];
+        int[,] symbol = new int[SymbolLength, SymbolHeight];
 
-        double[] lernErr = new double[500];
         public Form1()
         {
             InitializeComponent();
+            art.CreateNet(SymbolLength * SymbolHeight);
         }
 
+
+        //преобразует символ в строку
+        int[] SymbolToInput(int[,] symbol)
+        {
+            int[] result = new int[SymbolLength * SymbolHeight];
+            int resultIterator = 0;
+            for (int i = 0; i < SymbolLength; i++)
+                for (int j = 0; j < SymbolHeight; j++)
+                {
+                    result[resultIterator] = symbol[i, j];
+                    resultIterator++;
+                }
+                    return result;
+        }
 
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             int width = 10;
             int height = 20;
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < SymbolLength; i++)
             {
-                for (int j = 0; j < 6; j++)
+                for (int j = 0; j < SymbolHeight; j++)
                 {
-                    if (Symbol[i, j] == 1)
+                    if (symbol[i, j] == 1)
                     {
                         e.Graphics.FillRectangle(Brushes.Black, j * width, i * height, width, height);
                     }
@@ -47,87 +68,47 @@ namespace NeuroNetSymbols
 
         private void button4_Click(object sender, EventArgs e)
         {
-            Symbol = DigitGenerator.generateSymbol3((int)numericUpDown1.Value);
+            symbol = DigitGenerator.generateSymbol3();
             GetResult();
             pictureBox1.Invalidate();
         }
         private void button3_Click(object sender, EventArgs e)
         {
-            Symbol = DigitGenerator.generateSymbol2((int)numericUpDown1.Value);
+            symbol = DigitGenerator.generateSymbol2();
             GetResult();
             pictureBox1.Invalidate();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Symbol = DigitGenerator.generateSymbol1((int)numericUpDown1.Value);
+            symbol = DigitGenerator.generateSymbol1();
             GetResult();
             pictureBox1.Invalidate();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Symbol = DigitGenerator.generateSymbol0((int)numericUpDown1.Value);
+            symbol = DigitGenerator.generateSymbol0();
             GetResult();
             pictureBox1.Invalidate();
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < 500; i++)
-            {
-                lernErr[i] = 0;
-                testErr[i] = 0;
-            }
-            int LernCount = 500;
-            net.ResetWeight();
-            progressBar1.Maximum = LernCount;
-            for(int i = 0;i<LernCount;i++)
-            {
-                lernErr[i] = net.Lern(0.1);
-                testErr[i] = net.Test();
-                progressBar1.Value = i;
-                //обновляю графики ошибок
-                pictureBox2.Invalidate();
-                pictureBox3.Invalidate();
-                Application.DoEvents();
-            }
+          
         }
 
         void GetResult()
         {
-            net.setInput(Symbol);
-            net.work();
-            int result = net.getResult();
-            if (result == 0)
-                label2.Text = "2";
-            if (result == 1)
-                label2.Text = "3";
-            if (result == 2)
-                label2.Text = "Ч";
-            if (result == 3)
-                label2.Text = "Щ";
+            //дать сети образец, получить результат, вывести результат в label4
+            label4.Text = art.AddSample(SymbolToInput(symbol)).ToString();
         }
 
-        private void pictureBox2_Paint(object sender, PaintEventArgs e)
+        private void button5_Click_1(object sender, EventArgs e)
         {
-            for(int i = 0;i<500;i++)
-            {
-                e.Graphics.FillEllipse(Brushes.Black, i, 50-(int)(lernErr[i] * 100), 2, 2);
-            }
-        }
-
-        private void pictureBox3_Paint(object sender, PaintEventArgs e)
-        {
-            for (int i = 0; i < 500; i++)
-            {
-                e.Graphics.FillEllipse(Brushes.Black, i, 50 - (int)(testErr[i] * 100), 2, 2);
-            }
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            ARTNeuroNet anet = new ARTNeuroNet();
+            symbol = DigitGenerator.generateSymbol4();
+            GetResult();
+            pictureBox1.Invalidate();
         }
     }
 }

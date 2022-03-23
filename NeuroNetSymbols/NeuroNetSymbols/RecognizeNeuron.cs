@@ -8,6 +8,24 @@ namespace NeuroNetSymbols
 {
     class RecognizeNeuron
     {
-        public int Out;
+        //вход
+        public double input;
+        //выход нейрона для старта
+        //после старат будет использоваться GetResult()
+        public int output;
+
+        //отключен ли нейрон
+        public bool reset = false;
+
+        //вычисляет выход нейрона и возвращает этот выход
+        //threshold - порог активации
+        public int GetResult(double threshold)
+        {
+            if (input > threshold)
+                output = 1;
+            else
+                output = 0;
+            return output;
+        }
     }
 }
